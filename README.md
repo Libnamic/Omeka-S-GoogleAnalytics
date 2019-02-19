@@ -18,11 +18,15 @@ Troubleshooting
 
 See online issues on the [Module Support] page on GitHub.
 
+Regarding Google Analytics, information can be found here: [Google Analytics help]
+
 
 Maintainer
 -------
 
 This module is developed and maintained by [Libnamic].
+* [Libnamic in Github]
+* [Jesús Bocanegra in Github]
 
 License
 -------
