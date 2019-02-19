@@ -8,7 +8,7 @@ for Google Analytics will be included in all public views when user is not logge
 Installation
 ------------
 
-Uncompress files from zip or clone and rename plugin folder `GoogleAnalytics`.
+Uncompress files from release zip or clone repository and rename module folder to `GoogleAnalytics`.
 
 See Omeka S end user documentation for [Installing a module in Omeka S] and follow the instructions.
 
