@@ -13,17 +13,17 @@ class ConfigForm extends Form
             'type' => Element\Text::class,
             'options' => [
                 'label' => 'Google Analytics code', // @translate
-                'info' => 'Google Analytics tracking ID for your site', // @translate
+                'info' => 'Google Analytics tracking ID for all sites, unless otherwise specified in site settings', // @translate
             ],
             'attributes' => [
-                'id' => 'googleanalytics_code',
+                'id' => 'googleanalytics',
             ],
         ]);
 
         $inputFilter = $this->getInputFilter();
         $inputFilter->add([
             'name' => 'googleanalytics_code',
-            'required' => true,
+            'required' => false,
         ]);
     }
 }

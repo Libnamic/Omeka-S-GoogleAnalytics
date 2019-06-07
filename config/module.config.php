@@ -6,12 +6,12 @@ return [
         'invokables' => [
             Form\ConfigForm::class => Form\ConfigForm::class,
         ],
-    ]/*,
+    ],
     'googleanalytics' => [
         'config' => [
-            'googleanalytics_code' => [
-                'code',
+            'googleanalytics'=>[
+                'googleanalytics_code'=>''
             ],
         ],
-    ],*/
+    ],
 ];

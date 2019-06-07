@@ -4,6 +4,9 @@ Google Analytics (Omeka S module)
 [Google Analytics] is a module for [Omeka S] that Includes simple support for Google Analytics.
 The module allows to insert the Google Analytics tracking code in the module settings. The script
 for Google Analytics will be included in all public views when user is not logged in.
+The tracking code can be inserted for the whole Omeka S installation at the module settings. Sites
+can be assigned different tracking codes at the site settings page. Inputting "-" completely disables
+Google Analytics for that site.
 
 Installation
 ------------
