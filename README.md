@@ -39,7 +39,7 @@ This module is published under the MIT License.
 Copyright
 ---------
 
-* Copyright Jesús Bocanegra Linares, Libnamic, 2019
+* Copyright Jesús Bocanegra Linares, Libnamic, 2020
 
 
 [Libnamic]: https://libnamic.com/?ref=GAModuleOmekaS&amp;pos=readme

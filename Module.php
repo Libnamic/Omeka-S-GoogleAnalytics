@@ -4,7 +4,7 @@
  *
  * Includes simple support for Google Analytics in Omeka S
  *
- * @copyright Jesús Bocanegra Linares, Libnamic, 2019
+ * @copyright Jesús Bocanegra Linares, Libnamic, 2020
  * @license MIT License
  *
  * This software is governed by the MIT License, included with the source code.
@@ -12,7 +12,6 @@
 namespace GoogleAnalytics;
 
 use Zend\Form\Fieldset;
-//use Omeka\Form\Element\Text;
 use Zend\Form\Text;
 use Omeka\Module\AbstractModule;
 use GoogleAnalytics\Form\ConfigForm;
@@ -101,10 +100,10 @@ class Module extends AbstractModule
         $form->init();
         $form->setData($data);
         $html = $renderer->formCollection($form);
-        $html .= '<h4><a target="_blank" href="https://support.google.com/analytics/answer/1008080#trackingID">Where can I find my tracking code?</a></h4>';
-        $html .= '<p style="margin: 2em 0 0.2em">Thank you for using this Module</p><h4>Developed by <a target="_blank" href="https://libnamic.com/?ref=GAModuleOmekaS&amp;pos=config">Libnamic</a></h4>';
-        $html .= '<a target="_blank" href="https://libnamic.com/?ref=GAModuleOmekaS&amp;pos=config_logo"><img style="max-height: 78px; display: block; margin: 0.5em 0.1em" src="https://assets.libnamic.com/logos/libnamic.png?ref=GAModuleOmekaS&amp;pos=config_logo" alt="Libnamic"></a>';
-        $html .= '<h5><a href="mailto:support@libnamic.com">Support</a></h5>';
+        $html .= '<h4><a target="blank" href="https://support.google.com/analytics/answer/1008080#trackingID">Where can I find my tracking code?</a></h4>';
+        $html .= '<p style="margin: 2em 0 0.2em">Thank you for using this Module!</p><h4>Developed by <a target="blank" href="https://omeka.libnamic.com/?ref=GAModuleOmekaS&amp;pos=config">Libnamic</a></h4>';
+        $html .= '<a target="blank" href="https://omeka.libnamic.com/?ref=GAModuleOmekaS&amp;pos=config_logo"><img style="max-height: 78px; display: block; margin: 0.5em 0.1em" src="https://assets.libnamic.com/logos/libnamic.png?ref=GAModuleOmekaS&amp;pos=config_logo" alt="Libnamic"></a>';
+        $html .= '<h5><a href="mailto:support@libnamic.com" target="blank">¿Do you have any suggestions or need support?</a></h5><h6><a target="blank" href="https://github.com/Libnamic/Omeka-S-GoogleAnalytics/issues">Github issues page</a></h6>';
         return $html;
     }
 

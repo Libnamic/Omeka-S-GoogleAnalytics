@@ -1,0 +1,8 @@
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/.tx/ export-ignore
+/language/*.pot export-ignore
+/language/*.po export-ignore
+/asset/vendor
+node_modules
+/vendor
