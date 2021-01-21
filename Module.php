@@ -11,15 +11,14 @@
  */
 namespace GoogleAnalytics;
 
-use Zend\Form\Fieldset;
-use Zend\Form\Text;
+use Laminas\Form\Fieldset;
 use Omeka\Module\AbstractModule;
 use GoogleAnalytics\Form\ConfigForm;
-use Zend\EventManager\Event;
-use Zend\EventManager\SharedEventManagerInterface;
-use Zend\Mvc\Controller\AbstractController;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\View\Renderer\PhpRenderer;
+use Laminas\EventManager\Event;
+use Laminas\EventManager\SharedEventManagerInterface;
+use Laminas\Mvc\Controller\AbstractController;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Laminas\View\Renderer\PhpRenderer;
 
 class Module extends AbstractModule
 {
@@ -52,7 +51,7 @@ class Module extends AbstractModule
     {
         $config = require __DIR__ . '/config/module.config.php';
         $defaultSettings = $config[strtolower(__NAMESPACE__)][$key];
-        
+
         foreach ($defaultSettings as $name => $value) {
             switch ($process) {
                 case 'install':
@@ -73,7 +72,7 @@ class Module extends AbstractModule
             'view.layout',
             [$this, 'printScript']
         );
-    
+
         // Site settings
         $sharedEventManager->attach(
             'Omeka\Form\SiteSettingsForm',
@@ -96,7 +95,7 @@ class Module extends AbstractModule
 
         $data = $settings->get('googleanalytics', ['']);
 
-        
+
         $form->init();
         $form->setData($data);
         $html = $renderer->formCollection($form);
@@ -132,7 +131,7 @@ class Module extends AbstractModule
     {
         $siteSettings = $this->getServiceLocator()->get('Omeka\Settings\Site');
         $form = $event->getTarget();
-        
+
         $fieldset = new Fieldset('libnamic_googleanalytics');
         $fieldset->setLabel('Libnamic Google Analytics');
         $fieldset->setAttribute('action', 'libnamic_googleanalytics/settings');
@@ -159,8 +158,8 @@ class Module extends AbstractModule
     {
         // Input filters
         $inputFilter = $event->getParam('inputFilter');
-        
-        
+
+
         $moduleInputFilter = $inputFilter->get('libnamic_googleanalytics');
 
         $moduleInputFilter->add([
@@ -169,7 +168,7 @@ class Module extends AbstractModule
         ]);
     }
 
- 
+
     /**
      * Print script for Google Analytics.
      *
@@ -178,7 +177,7 @@ class Module extends AbstractModule
     public function printScript(Event $event)
     {
         $view = $event->getTarget();
-        
+
         // Don't show if the user is logged in
         $user = $this->getServiceLocator()->get('Omeka\AuthenticationService')->getIdentity();
         if (!$user) {
@@ -205,7 +204,7 @@ class Module extends AbstractModule
             // Check the site code, and if it's empty, use the global one
             if(empty($code))
             {
-                $settings = $this->getServiceLocator()->get('Omeka\Settings');        
+                $settings = $this->getServiceLocator()->get('Omeka\Settings');
                 $settings = $settings->get('googleanalytics', '');
                 if($settings!=null)
                     $code = $settings['googleanalytics_code'];
@@ -218,7 +217,7 @@ class Module extends AbstractModule
                 ga('send', 'pageview');
                 ");
                 $view->headScript()->appendFile('https://www.google-analytics.com/analytics.js', '', array('async'=>'true'));
-            }   
+            }
         }
     }
 }
