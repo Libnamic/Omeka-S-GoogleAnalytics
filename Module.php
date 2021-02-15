@@ -218,6 +218,29 @@ class Module extends AbstractModule
                 ");
                 $view->headScript()->appendFile('https://www.google-analytics.com/analytics.js', '', array('async'=>'true'));
             }
+            if ((!empty($code)) && ($code != '-')) {
+
+                // universal analytics
+                if (preg_match("/^[G][-]\w*", $code)) {
+                    $view->headScript()->appendScript("
+                    
+                      window.dataLayer = window.dataLayer || [];
+                      function gtag(){dataLayer.push(arguments);}
+                      gtag('js', new Date());
+                    
+                      gtag('config', '$code')");
+            
+                    $view->headScript()->appendFile('https://www.googletagmanager.com/gtag/js?id='.$code, '', array('async' => 'true'));
+                    // classic analytics
+                } else {
+
+                    $view->headScript()->appendScript("window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+                    ga('create', '$code', 'auto');
+                    ga('send', 'pageview');
+                    ");
+                    $view->headScript()->appendFile('https://www.google-analytics.com/analytics.js', '', array('async' => 'true'));
+                }
+            }
         }
     }
 }
