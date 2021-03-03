@@ -221,14 +221,16 @@ class Module extends AbstractModule
             if ((!empty($code)) && ($code != '-')) {
 
                 // universal analytics
-                if (preg_match("/^[G][-]\w*", $code)) {
+                if (preg_match("/^[G][-]\w*", $code)==0) {
                     $view->headScript()->appendScript("
                     
                       window.dataLayer = window.dataLayer || [];
                       function gtag(){dataLayer.push(arguments);}
                       gtag('js', new Date());
                     
-                      gtag('config', '$code')");
+                      gtag('config', '$code');"
+                                                     
+                     );
             
                     $view->headScript()->appendFile('https://www.googletagmanager.com/gtag/js?id='.$code, '', array('async' => 'true'));
                     // classic analytics
