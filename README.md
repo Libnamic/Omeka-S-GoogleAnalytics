@@ -28,8 +28,8 @@ Maintainer
 -------
 
 This module is developed and maintained by [Libnamic].
-* [Libnamic in Github]
-* [Jesús Bocanegra in Github]
+* [Libnamic on Github]
+* [Jesús Bocanegra on Github]
 
 License
 -------
@@ -39,7 +39,7 @@ This module is published under the MIT License.
 Copyright
 ---------
 
-* Copyright Jesús Bocanegra Linares, Libnamic, 2020
+* Copyright Jesús Bocanegra Linares, Libnamic, 2021
 
 
 [Libnamic]: https://libnamic.com/?ref=GAModuleOmekaS&amp;pos=readme
