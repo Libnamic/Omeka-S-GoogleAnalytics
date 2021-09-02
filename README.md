@@ -48,5 +48,5 @@ Copyright
 [Omeka S]: https://omeka.org/s
 [Installing a module in Omeka S]: http://dev.omeka.org/docs/s/user-manual/modules/#installing-modules
 [Google Analytics help]: https://support.google.com/analytics/answer/1008080
-[Libnamic in Github]: https://github.com/Libnamic "Libnamic"
-[Jesús Bocanegra in Github]: https://github.com/Boca13 "Jesús Bocanegra"
+[Libnamic on Github]: https://github.com/Libnamic "Libnamic"
+[Jesús Bocanegra on Github]: https://github.com/Boca13 "Jesús Bocanegra"
