@@ -4,7 +4,7 @@
  *
  * Includes simple support for Google Analytics in Omeka S
  *
- * @copyright Jesús Bocanegra Linares, Libnamic, 2020
+ * @copyright Jesús Bocanegra Linares, Libnamic, 2021
  * @license MIT License
  *
  * This software is governed by the MIT License, included with the source code.
@@ -177,6 +177,14 @@ class Module extends AbstractModule
     public function printScript(Event $event)
     {
         $view = $event->getTarget();
+
+        // Disable for upgrade requests. This avoids fatal errors before upgrading the database after updating Omeka
+        $params = $view->params()->fromRoute();
+        if ($params['controller'] == 'Omeka\Controller\Migrate') {
+            return;
+        }
+        if ($view->status()->isAdminRequest())
+            return;
 
         // Don't show if the user is logged in
         $user = $this->getServiceLocator()->get('Omeka\AuthenticationService')->getIdentity();
