@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GoogleAnalytics
  *
@@ -9,8 +10,11 @@
  *
  * This software is governed by the MIT License, included with the source code.
  */
+
 namespace GoogleAnalytics;
 
+use Laminas\Validator;
+use Laminas\Validator\Callback;
 use Laminas\Form\Fieldset;
 use Omeka\Module\AbstractModule;
 use GoogleAnalytics\Form\ConfigForm;
@@ -22,6 +26,9 @@ use Laminas\View\Renderer\PhpRenderer;
 
 class Module extends AbstractModule
 {
+
+    protected $validator;
+
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
@@ -58,7 +65,7 @@ class Module extends AbstractModule
                     $settings->set($name, $value);
                     break;
                 case 'uninstall':
-                     $settings->delete($name);
+                    $settings->delete($name);
                     break;
             }
         }
@@ -72,8 +79,20 @@ class Module extends AbstractModule
             'view.layout',
             [$this, 'printScript']
         );
+        // Global settings
+        $sharedEventManager->attach(
+            'Omeka\Form\SettingForm',
+            'form.add_elements',
+            [$this, 'addGlobalSettings']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Form\SettingForm',
+            'form.add_input_filters',
+            [$this, 'addSettingsFilters']
+        );
 
-        // Site settings
+
+
         $sharedEventManager->attach(
             'Omeka\Form\SiteSettingsForm',
             'form.add_elements',
@@ -117,22 +136,71 @@ class Module extends AbstractModule
 
         $form->init();
         $form->setData($params);
-        if (!$form->isValid()) {
-            $controller->messenger()->addErrors($form->getMessages());
+
+        $code = $params['googleanalytics_code'];
+        if (preg_match("/^([G][A]{0,1}[-]\w*|[U][A]{1}[-]\w*[-]\w*)/", $code) == 0) {
+
+            $controller->messenger()->addErrors(['The format of Google Analytics Code is incorrect']); //@translate
             return false;
         }
+
+        if (!$form->isValid()) {
+            $controller->messenger()->addErrors([$form->getMessages()]);
+            return false;
+        }
+
 
         $params = $form->getData();
         $settings->set('googleanalytics', $params);
     }
 
+
+    // global settings
+    public function addGlobalSettings($event)
+    {
+
+        $globalSettings = $this->getServiceLocator()->get('Omeka\Settings');
+
+        $form = $event->getTarget();
+
+        $fieldset = new Fieldset('libnamic_googleanalytics');
+        $fieldset->setLabel('Global Settings Google Analtiycs'); // @translate
+        $fieldset->setAttribute('action', 'libnamic_googleanalytics/settings');
+        $fieldset->add([
+            'name' => 'google_analytics_internal_user',
+            'type' => 'checkbox',
+            'options' => [
+                'label' => 'Allow track visit from login users in Google Analytics.', // @translate
+            ],
+            'attributes' => [
+                'required' => false,
+                'value' => $globalSettings->get('google_analytics_internal_user', ''),
+            ],
+        ]);
+        $form->add($fieldset);
+    }
+
+    public function addSettingsFilters($event)
+    {
+        // Input filters
+        $inputFilter = $event->getParam('inputFilter');
+
+
+        $googleAnaluyticsInputFilter = $inputFilter->get('libnamic_googleanalytics');
+
+        $googleAnaluyticsInputFilter->add([
+            'name' => 'google_analytics_internal_user',
+
+
+        ]);
+    }
     // Site settings
     public function addSiteSettings($event)
     {
         $siteSettings = $this->getServiceLocator()->get('Omeka\Settings\Site');
         $form = $event->getTarget();
 
-        $fieldset = new Fieldset('libnamic_googleanalytics');
+        $fieldset = new Fieldset('libnamic_googleanalytics_site');
         $fieldset->setLabel('Libnamic Google Analytics');
         $fieldset->setAttribute('action', 'libnamic_googleanalytics/settings');
 
@@ -140,7 +208,9 @@ class Module extends AbstractModule
             'name' => 'googleanalytics_code',
             'type' => 'Text',
             'options' => [
-                'label' => 'Google Analytics tracking code for this site. Input "-" if none should be used (not even the global code)', // @translate
+                'label' => 'Google Analytics', // @translate
+                'info' => 'Google Analytics tracking code for this site. Input "-" if none should be used (not even the global code)', // @translate
+
             ],
             'attributes' => [
                 'required' => false,
@@ -160,11 +230,26 @@ class Module extends AbstractModule
         $inputFilter = $event->getParam('inputFilter');
 
 
-        $moduleInputFilter = $inputFilter->get('libnamic_googleanalytics');
+        $moduleInputFilter = $inputFilter->get('libnamic_googleanalytics_site');
+
 
         $moduleInputFilter->add([
             'name' => 'googleanalytics_code',
             'allow_empty' => true,
+            'filters' => [
+                ['name' => 'StringTrim'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'Callback',
+                    'options' => [
+                        'messages' => [
+                            Callback::INVALID_VALUE => 'The format of Google Analytics Code is incorrect', // @translate
+                        ],
+                        'callback' => [$this, 'codeIsValid'],
+                    ],
+                ],
+            ],
         ]);
     }
 
@@ -188,7 +273,11 @@ class Module extends AbstractModule
 
         // Don't show if the user is logged in
         $user = $this->getServiceLocator()->get('Omeka\AuthenticationService')->getIdentity();
-        if (!$user) {
+        $globalSettings = $this->getServiceLocator()->get('Omeka\Settings');
+        $track = $globalSettings->get('google_analytics_internal_user');
+
+
+        if ($track == '1' || !$user) {
 
 
             // First check if the site has a Google Analytics set
@@ -196,13 +285,12 @@ class Module extends AbstractModule
             $api = $this->getServiceLocator()->get('Omeka\ApiManager');
             $sites = $api->search('sites', [])->getContent();
             $routeMatch = $this->getServiceLocator()->get('Application')
-                    ->getMvcEvent()->getRouteMatch();
+                ->getMvcEvent()->getRouteMatch();
             $siteSlug = $routeMatch->getParam('site-slug');
 
             $found = false;
             foreach ($sites as $site) {
-                if($site->slug()==$siteSlug)
-                {
+                if ($site->slug() == $siteSlug) {
                     $siteSettings->setTargetId($site->id());
                     $code = $siteSettings->get('googleanalytics_code', '');
                     break;
@@ -210,37 +298,31 @@ class Module extends AbstractModule
             }
 
             // Check the site code, and if it's empty, use the global one
-            if(empty($code))
-            {
+            if (empty($code)) {
                 $settings = $this->getServiceLocator()->get('Omeka\Settings');
                 $settings = $settings->get('googleanalytics', '');
-                if($settings!=null)
+                if ($settings != null)
                     $code = $settings['googleanalytics_code'];
             }
 
-            if((!empty($code))&&($code!='-'))
-            {
-                $view->headScript()->appendScript("window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-                ga('create', '$code', 'auto');
-                ga('send', 'pageview');
-                ");
-                $view->headScript()->appendFile('https://www.google-analytics.com/analytics.js', '', array('async'=>'true'));
-            }
+
             if ((!empty($code)) && ($code != '-')) {
 
                 // universal analytics
-                if (preg_match("/^[G][-]\w*", $code)==0) {
-                    $view->headScript()->appendScript("
+                if (preg_match('/^([G]{1}[-]\w*|[U][A]{1}[-]\w*[-]\w*)/', $code) == 1) {
+
+                    $view->headScript()->appendScript(
+                        "
                     
                       window.dataLayer = window.dataLayer || [];
                       function gtag(){dataLayer.push(arguments);}
                       gtag('js', new Date());
                     
                       gtag('config', '$code');"
-                                                     
-                     );
-            
-                    $view->headScript()->appendFile('https://www.googletagmanager.com/gtag/js?id='.$code, '', array('async' => 'true'));
+
+                    );
+
+                    $view->headScript()->appendFile('https://www.googletagmanager.com/gtag/js?id=' . $code, '', array('async' => 'true'));
                     // classic analytics
                 } else {
 
@@ -252,5 +334,16 @@ class Module extends AbstractModule
                 }
             }
         }
+    }
+    public function codeIsValid($code)
+    {
+
+        $valid = '';
+        if (preg_match("/^([G][A]{0,1}[-]\w*|[U][A]{1}[-]\w*[-]\w*)/", $code) == 1 || $code === '-') {
+            $valid = '$valid';
+        } else {
+            $valid = '';
+        }
+        return $valid;
     }
 }
