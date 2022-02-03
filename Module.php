@@ -164,7 +164,7 @@ class Module extends AbstractModule
         $form = $event->getTarget();
 
         $fieldset = new Fieldset('libnamic_googleanalytics');
-        $fieldset->setLabel('Global Settings Google Analtiycs'); // @translate
+        $fieldset->setLabel('Global Settings Google Analytics'); // @translate
         $fieldset->setAttribute('action', 'libnamic_googleanalytics/settings');
         $fieldset->add([
             'name' => 'google_analytics_internal_user',

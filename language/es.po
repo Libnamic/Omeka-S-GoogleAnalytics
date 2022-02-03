@@ -1,0 +1,40 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: Module.php:143 Module.php:247
+msgid "The format of Google Analytics Code is incorrect"
+msgstr "El formato del codigo de Google Analytics es incorrecto"
+
+#: Module.php:167
+msgid "Global Settings Google Analytics"
+msgstr "Configuración global Google Analytics"
+
+#: Module.php:173
+msgid "Allow track visit from login users in Google Analytics."
+msgstr "Permitir el seguimiento de la visita de los usuarios que inician sesión, en Google Analytics."
+
+#: Module.php:211
+msgid "Google Analytics"
+msgstr ""
+
+#: Module.php:212
+msgid ""
+"Google Analytics tracking code for this site. Input \"-\" if none should be "
+"used (not even the global code)"
+msgstr "Código de seguimiento de Google Analytics para este sitio. Ingrese \"-\" si ninguno debe ser usado (ni siquiera el código global)"
+
+#: src/Form/ConfigForm.php:15
+msgid "Google Analytics code"
+msgstr "Codigo de Google Analytics"
+
+#: src/Form/ConfigForm.php:16
+msgid ""
+"Google Analytics tracking ID for all sites, unless otherwise specified in "
+"site settings"
+msgstr "ID de seguimiento de Google Analytics para todos los sitios, a menos que se especifique lo contrario en configuraciones del sitio"
+
+
