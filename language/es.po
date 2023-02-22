@@ -29,12 +29,16 @@ msgstr "Código de seguimiento de Google Analytics para este sitio. Ingrese \"-\
 
 #: src/Form/ConfigForm.php:15
 msgid "Google Analytics code"
-msgstr "Codigo de Google Analytics"
+msgstr "Código de Google Analytics"
 
 #: src/Form/ConfigForm.php:16
 msgid ""
 "Google Analytics tracking ID for all sites, unless otherwise specified in "
 "site settings"
-msgstr "ID de seguimiento de Google Analytics para todos los sitios, a menos que se especifique lo contrario en configuraciones del sitio"
+msgstr "ID de seguimiento de Google Analytics para todos los sitios, a menos que se especifique lo contrario en las opciones del sitio"
 
+msgid "Additional snippet"
+msgstr "Codigo adicional"
 
+msgid "Snippet to insert in all sites, unless otherwise specified in site settings. Can be used for tracking and analytics systems other than Google Analytics"
+msgstr "Código adicional a insertar en todos los sitios, a menos que se especifique lo contrario en las opciones del sitio"
