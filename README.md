@@ -8,6 +8,8 @@ The tracking code can be inserted for the whole Omeka S installation at the modu
 can be assigned different tracking codes at the site settings page. Inputting "-" completely disables
 Google Analytics for that site.
 
+The module now supports GA4 and Omeka S versions 3 and 4.
+
 Installation
 ------------
 
@@ -39,10 +41,10 @@ This module is published under the MIT License.
 Copyright
 ---------
 
-* Copyright Jesús Bocanegra Linares, Libnamic, 2021
+* Copyright Jesús Bocanegra Linares, Libnamic, 2023
 
 
-[Libnamic]: https://libnamic.com/?ref=GAModuleOmekaS&amp;pos=readme
+[Libnamic]: https://libnamic.link/r/8wk?ref=GAModuleOmekaS
 [Google Analytics]: https://github.com/Libnamic/Omeka-S-GoogleAnalytics
 [Module Support]: https://github.com/Libnamic/Omeka-S-GoogleAnalytics/issues
 [Omeka S]: https://omeka.org/s
