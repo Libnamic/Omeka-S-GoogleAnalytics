@@ -3,6 +3,7 @@
 /.tx/ export-ignore
 /language/*.pot export-ignore
 /language/*.po export-ignore
+/.vscode/ export-ignore
 /asset/vendor
 node_modules
 /vendor

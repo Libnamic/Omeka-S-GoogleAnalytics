@@ -315,12 +315,20 @@ class Module extends AbstractModule
                 if ($settings != null)
                     $extra_snippet = $settings['additional_snippet'];
             }
+            if (empty($extra_snippet)) {
+                $settings = $this->getServiceLocator()->get('Omeka\Settings');
+                $settings = $settings->get('googleanalytics', '');
+                if ($settings != null)
+                    $extra_snippet = $settings['additional_snippet'];
+            }
 
 
             if ((!empty($code)) && ($code != '-')) {
 
                 // new analytics
                 if (preg_match('/^([G]{1}[-]\w*|[U][A]{1}[-]\w*[-]\w*)/', $code) == 1) {
+
+                    $view->headScript()->appendFile('https://www.googletagmanager.com/gtag/js?id=' . $code, '', array('async' => 'true'));
 
                     $view->headScript()->appendFile('https://www.googletagmanager.com/gtag/js?id=' . $code, '', array('async' => 'true'));
 
@@ -338,7 +346,7 @@ class Module extends AbstractModule
                     
                     // classic analytics
                 } else {
-                    $view->headScript()->appendFile('https://www.google-analytics.com/analytics.js', '', array('async' => 'true'));
+                    $view->headScript()->appendFile('https://www.google-analytics.com/analytics.js', '', array('async' => 'true'));                    $view->headScript()->appendFile('https://www.google-analytics.com/analytics.js', '', array('async' => 'true'));
                     $view->headScript()->appendScript("window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
                     ga('create', '$code', 'auto');
                     ga('send', 'pageview');
