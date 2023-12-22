@@ -330,8 +330,6 @@ class Module extends AbstractModule
 
                     $view->headScript()->appendFile('https://www.googletagmanager.com/gtag/js?id=' . $code, '', array('async' => 'true'));
 
-                    $view->headScript()->appendFile('https://www.googletagmanager.com/gtag/js?id=' . $code, '', array('async' => 'true'));
-
                     $view->headScript()->appendScript(
                         "
                     
@@ -346,7 +344,7 @@ class Module extends AbstractModule
                     
                     // classic analytics
                 } else {
-                    $view->headScript()->appendFile('https://www.google-analytics.com/analytics.js', '', array('async' => 'true'));                    $view->headScript()->appendFile('https://www.google-analytics.com/analytics.js', '', array('async' => 'true'));
+                    $view->headScript()->appendFile('https://www.google-analytics.com/analytics.js', '', array('async' => 'true'));
                     $view->headScript()->appendScript("window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
                     ga('create', '$code', 'auto');
                     ga('send', 'pageview');
