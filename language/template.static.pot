@@ -6,8 +6,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Ficha"
-msgstr "Itemsito"
+msgstr "Itemsitoaaa"
 
 msgid "Advanced search"
-msgstr "Itemsito"
+msgstr "Itaemsito"
 
+msgid "Search results for"
+msgstr "Suchergebnisse für"
+
+msgid "No result found"
+msgstr "Keine Einträge gefunden"

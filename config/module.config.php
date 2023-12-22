@@ -22,6 +22,9 @@ return [
             'googleanalytics'=>[
                 'googleanalytics_code'=>''
             ],
+            'additional_snippet'=>[
+                'additional_snippet'=>''
+            ],
         ],
     ],
 ];
