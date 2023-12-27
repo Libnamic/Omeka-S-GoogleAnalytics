@@ -159,6 +159,7 @@ class Module extends AbstractModule
     {
 
         $globalSettings = $this->getServiceLocator()->get('Omeka\Settings');
+        $internalUser = $globalSettings->get('libnamic_googleanalytics','') ? $globalSettings->get('libnamic_googleanalytics')["google_analytics_internal_user"] :'';
 
         $form = $event->getTarget();
 
@@ -173,7 +174,7 @@ class Module extends AbstractModule
             ],
             'attributes' => [
                 'required' => false,
-                'value' => $globalSettings->get('google_analytics_internal_user', ''),
+                'value' => $internalUser,
             ],
         ]);
         $form->add($fieldset);
@@ -197,6 +198,8 @@ class Module extends AbstractModule
     public function addSiteSettings($event)
     {
         $siteSettings = $this->getServiceLocator()->get('Omeka\Settings\Site');
+
+        $siteCode = $siteSettings->get('libnamic_googleanalytics_site','') ? $siteSettings->get('libnamic_googleanalytics_site')["googleanalytics_code"] :'' ;
         $form = $event->getTarget();
 
         $fieldset = new Fieldset('libnamic_googleanalytics_site');
@@ -213,7 +216,7 @@ class Module extends AbstractModule
             ],
             'attributes' => [
                 'required' => false,
-                'value' => $siteSettings->get('googleanalytics_code', ''),
+                'value' => $siteCode,
             ],
         ]);
 
@@ -273,8 +276,8 @@ class Module extends AbstractModule
         // Don't show if the user is logged in
         $user = $this->getServiceLocator()->get('Omeka\AuthenticationService')->getIdentity();
         $globalSettings = $this->getServiceLocator()->get('Omeka\Settings');
-        $track = $globalSettings->get('google_analytics_internal_user');
-
+        //$track = $globalSettings->get('google_analytics_internal_user');
+        $track = $globalSettings->get('libnamic_googleanalytics','') ? $globalSettings->get('libnamic_googleanalytics')["google_analytics_internal_user"] :'0';
 
         if ($track == '1' || !$user) {
 
@@ -293,7 +296,7 @@ class Module extends AbstractModule
             foreach ($sites as $site) {
                 if ($site->slug() == $siteSlug) {
                     $siteSettings->setTargetId($site->id());
-                    $code = $siteSettings->get('googleanalytics_code', '');
+                    $code = $siteSettings->get('libnamic_googleanalytics_site','') ? $siteSettings->get('libnamic_googleanalytics_site')["googleanalytics_code"]:'';
                     $extra_snippet = $siteSettings->get('additional_snippet', '');
                     break;
                 }
@@ -305,6 +308,12 @@ class Module extends AbstractModule
                 $settings = $settings->get('googleanalytics', '');
                 if ($settings != null)
                     $code = $settings['googleanalytics_code'];
+            }
+            if (empty($extra_snippet)) {
+                $settings = $this->getServiceLocator()->get('Omeka\Settings');
+                $settings = $settings->get('googleanalytics', '');
+                if ($settings != null)
+                    $extra_snippet = $settings['additional_snippet'];
             }
             if (empty($extra_snippet)) {
                 $settings = $this->getServiceLocator()->get('Omeka\Settings');

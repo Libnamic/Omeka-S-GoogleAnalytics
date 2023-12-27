@@ -1,0 +1,18 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Ficha"
+msgstr "Itemsitoaaa"
+
+msgid "Advanced search"
+msgstr "Itaemsito"
+
+msgid "Search results for"
+msgstr "Suchergebnisse für"
+
+msgid "No result found"
+msgstr "Keine Einträge gefunden"
